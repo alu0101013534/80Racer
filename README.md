@@ -1,4 +1,4 @@
-# 80Racer
+# GridWave
 Juego a desarrollar para el 4to CESINF
 
 ## Descripción Técnica
