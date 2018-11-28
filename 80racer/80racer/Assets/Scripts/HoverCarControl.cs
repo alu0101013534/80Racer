@@ -23,6 +23,8 @@ public class HoverCarControl : MonoBehaviour
 
   int layerMask;
 
+	public Transform shipBody;	
+  	public float angleOfRoll = 30f;			//The angle that the ship "banks" into a turn
   void Start()
   {
     body = GetComponent<Rigidbody>();
@@ -72,6 +74,15 @@ public class HoverCarControl : MonoBehaviour
     float turnAxis = Input.GetAxis("Horizontal");
     if (Mathf.Abs(turnAxis) > deadZone)
       currTurn = turnAxis;
+
+
+      
+		float angle = angleOfRoll * -Input.GetAxis("Horizontal");
+
+		//Calculate the rotation needed for this new angle
+		Quaternion bodyRotation = transform.rotation * Quaternion.Euler(0f, 0f, angle);
+		//Finally, apply this angle to the ship's body
+		shipBody.rotation = Quaternion.Lerp(shipBody.rotation, bodyRotation, Time.deltaTime * 10f);
   }
 
   void FixedUpdate()
