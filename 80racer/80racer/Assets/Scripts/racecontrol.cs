@@ -13,6 +13,7 @@ public class racecontrol : MonoBehaviour {
 	private int currentlaps=1;
 
 	public GameObject PausePanel;
+	public GameObject raceOverPanel;
 	
 	private bool IsPaused =false;
 
@@ -20,7 +21,10 @@ public class racecontrol : MonoBehaviour {
 	public TextMeshProUGUI racersText;
 	public TextMeshProUGUI speedText;
 
-	
+
+
+	public TextMeshProUGUI finishText;
+
 	public TextMeshProUGUI guiTextCountdown;
 
 	public int countMax=3;  //max countdown number
@@ -29,12 +33,14 @@ public class racecontrol : MonoBehaviour {
 	bool isCountingDown;
 	bool isRaceOver=false;
   	public Rigidbody body;
-
+	public List<string> racerNames;
 	public int racers=3;
+	public int participants;
 	// Use this for initialization
 	void Start () {
 		checkpoints[0].is_active=true;
 		
+		isRaceOver=false;
 		racersText.text = "";
 		lapsText.text = "Laps " +currentlaps.ToString()+"/"+laps.ToString();
 		
@@ -99,7 +105,8 @@ public class racecontrol : MonoBehaviour {
 			lapsText.text = "Laps " + currentlaps.ToString()+"/"+laps.ToString();
 			if(currentlaps >laps)
 				{
-			Debug.Log("fin carrera");
+				finished("Player");
+				endRace();
 				}
 		checkpoints[currentCheckpoint].is_active=true;
 	}
@@ -109,7 +116,7 @@ public class racecontrol : MonoBehaviour {
 
 		if(racers<=0)
 		{
-			Debug.Log("fin carrera");
+			endRace();
 				
 		}
 
@@ -125,16 +132,36 @@ public class racecontrol : MonoBehaviour {
 		StartCoroutine(CountdownFunction());
 	}
 
-	
+	public void Restart()
+    {
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+	}
 	public void Quit()
     {
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
 	}
 
 
+	public void playerDeath(){
+		isRaceOver=true;
+		raceOverPanel.SetActive(true);
+		Time.timeScale = 0f;
+	}
 
-
-
+	private void endRace(){
+		Cursor.lockState = CursorLockMode.None;
+	isRaceOver=true;
+	int i=1;
+	finishText.text="";
+	foreach (var name in racerNames)
+	{
+		
+		finishText.text+=i+") "+name+"\n";
+		i++;
+	}
+		raceOverPanel.SetActive(true);
+		Time.timeScale = 0f;
+	}
 
 public static IEnumerator WaitForRealSeconds( float delay )
 	{
@@ -171,6 +198,17 @@ public static IEnumerator WaitForRealSeconds( float delay )
 		guiTextCountdown.enabled = false;
 		
 		isCountingDown=false;
+
+
+	}
+
+	public void finished(string name){
+		participants--;
+
+		racerNames.Add(name);
+
+		if(participants<=0)
+			endRace();
 
 
 	}

@@ -8,7 +8,8 @@ public class AIcar : MonoBehaviour
 {
   Rigidbody body;
   float deadZone = 0.1f;
-
+ 
+	public string myname;
   public float hoverForce = 9.0f;
   public float hoverHeight = 2.0f;
   public GameObject[] hoverPoints;
@@ -37,6 +38,11 @@ public class AIcar : MonoBehaviour
   
     private float aclAxis = 0;//Input.GetAxis("Vertical");
   
+
+  bool firstcheckpoint=true;
+	private int currentCheckpoint=0;
+	public int laps=2;
+	private int currentlaps=1;
   void Start()
   {
     body = GetComponent<Rigidbody>();
@@ -159,4 +165,26 @@ public class AIcar : MonoBehaviour
 	}
   
   }
+
+
+  public void Checkpoint()
+	{
+		if(!firstcheckpoint){
+
+		if(currentCheckpoint>=2)
+			currentCheckpoint=0;
+		else 
+			currentCheckpoint++;
+		
+			Debug.Log(currentCheckpoint);	
+		if(currentCheckpoint==0)
+			currentlaps++;
+			if(currentlaps >laps)
+				{
+				FindObjectOfType<racecontrol>().finished(myname);
+				}
+		}
+		if(firstcheckpoint)
+			firstcheckpoint=false;
+	}
 }

@@ -21,10 +21,10 @@ public class checkpoint : MonoBehaviour {
 			Debug.Log("exit");
 			FindObjectOfType<racecontrol>().Checkpoint();
 		}
-		if (other.tag == "AI" && is_active ) {
+		if (other.tag == "AI") {
 			
 			Debug.Log("AI exit");
-			FindObjectOfType<racecontrol>().Checkpoint();
+			other.GetComponent<AIcar>().Checkpoint();
 		}
 	}
 	
