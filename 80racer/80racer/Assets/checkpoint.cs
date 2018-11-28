@@ -15,29 +15,15 @@ public class checkpoint : MonoBehaviour {
 	void Update () {
 		
 	}
-
-
-/* 	void OnTriggerEnter(Collider other){
-		if (other.tag == "Player") {
-			FindObjectOfType<racecontrol>().Checkpoint();
-		}
-	}
-*/
-	void OnTriggerEnter(Collider other){
-		if (other.tag == "Player") {
-			
-			Debug.Log("enter");
-		}
-	}
-	void OnTriggerStay(Collider other){
-		if (other.tag == "Player") {
-			Debug.Log("within");
-		}
-	}
 	void OnTriggerExit(Collider other){
-		if (other.tag == "Player") {
+		if (other.tag == "Player" && is_active ) {
 			
 			Debug.Log("exit");
+			FindObjectOfType<racecontrol>().Checkpoint();
+		}
+		if (other.tag == "AI" && is_active ) {
+			
+			Debug.Log("AI exit");
 			FindObjectOfType<racecontrol>().Checkpoint();
 		}
 	}
